@@ -31,8 +31,12 @@ typedef struct
 
 } HTTP_Client;
 
-/** Client struct will be dynamically allocated */
-int http_client_init(HTTP_Client** _Client);
+/** Initialize HTTP_Client (not for dynamic use) */
+int http_client_init(HTTP_Client* _Client);
+
+/** Client struct will be dynamically allocated
+ * Needs to be disposed using heap function */
+int http_client_init_heap(HTTP_Client** _Client_Ptr);
 
 /** Make GET request */
 int http_client_get(HTTP_Client* _Client, HTTP_Request* _Request);
@@ -41,5 +45,7 @@ int http_client_get(HTTP_Client* _Client, HTTP_Request* _Request);
 int http_client_post(HTTP_Client* _Client, HTTP_Request* _Request);
 
 /** Dispose of the client struct and it's members */
-void http_client_dispose(HTTP_Client** _Client);
+void http_client_dispose_heap(HTTP_Client** _Client_Ptr_Ptr);
 
+/** Dispose of the client struct and it's members */
+void http_client_dispose(HTTP_Client* _Client);
