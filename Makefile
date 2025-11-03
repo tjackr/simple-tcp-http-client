@@ -12,7 +12,7 @@ INCLUDES =
 MODE ?= release
 
 # Base warnings/defs
-CFLAGS_BASE=-Wall -Wno-psabi -Wfatal-errors -Werror
+CFLAGS_BASE= -C89 -ansi -Wall -Wno-psabi -Wfatal-errors -Werror
 
 # Select flags per mode (OPTIMIZE goes into CFLAGS in release; LTO linked only in release)
 ifeq ($(MODE),debug)

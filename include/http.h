@@ -1,0 +1,67 @@
+/* Simple HTTP Client
+ * 
+ * */
+
+#ifndef __http_h_
+#define __http_h_
+
+
+#include "tcp.h"
+
+/* Callback on response
+ * */
+typedef int (*http_client_callback)(const char* _data, size_t _length, void* _context);
+
+typedef enum
+{
+  Continue              = 100,
+  OK                    = 200,
+  Bad_Request           = 400,
+  Not_Found             = 404,
+  Internal_Server_Error = 500
+
+} HTTP_Status_Code;
+
+typedef struct
+{
+  char* method;
+  char* host;
+  char* port;
+  char* headers;
+  char* body;
+
+} HTTP_Request;
+
+typedef struct
+{
+  HTTP_Request* request;
+
+  char* head;
+  char* headers;
+  char* body;
+
+} HTTP_Response;
+
+typedef struct
+{
+  HTTP_Response         response;
+  TCP_Client            tcp_client;
+  HTTP_Status_Code      status_code;
+
+  http_client_callback  on_response;
+
+} HTTP_Client;
+
+/** Initialize HTTP_Client (not for dynamic use) */
+int http_client_init(HTTP_Client* _Client, http_client_callback _on_response);
+
+/** Make GET request */
+int http_client_get(HTTP_Request* _Request);
+
+/** Make POST request to passed */
+int http_client_post(HTTP_Request* _Request);
+
+/** Dispose of the client struct and it's members */
+void http_client_dispose(HTTP_Client* _Client);
+
+#endif /* define __http_h__ */
